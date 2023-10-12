@@ -24,6 +24,4 @@ This is the result of their actions. Instead of having these patches shipped wit
 
 On top of that, I was blocked by that person from the entire organization over this.
 
-I have nothing against (and have all the respect) the rest of the team working on the project. I'm open to communication in resolving this matter.
-
-
+I have nothing against (and have all the respect for) the rest of the team working on the project. I'm open to communication in resolving this matter.
