@@ -1,0 +1,191 @@
+gametitle=Gran Turismo 3 A-Spec [NTSC-J] (SCPS-15009)
+
+[No-Interlacing-2]
+gsinterlacemode=1
+author=xan1242
+description=Full-frame render hack for maximum sharpness in gameplay.
+
+//
+// resolution stuff
+//
+patch=1,EE,2023FEBC,short,3F80
+patch=1,EE,202400D4,short,01C0
+// this affects the actual res
+// field 0
+patch=1,EE,2023FF18,short,01C0
+// field 1 -- we nuke this one
+patch=1,EE,2023FF84,short,0001
+patch=1,EE,2023FFAC,word,AC530008
+// disable field switching
+patch=1,EE,20256DB0,extended,34020001
+
+patch=1,EE,2010143C,extended,24030000
+patch=1,EE,20101454,extended,24020001
+// disable switchers
+patch=1,EE,20101440,extended,00000000
+patch=1,EE,20101460,extended,00000000
+
+// force full frame
+patch=1,EE,204A0A20,extended,00000001
+
+//
+// disable half-res rendering
+//
+patch=1,EE,2024F3EC,extended,00003021
+patch=1,EE,2024F418,extended,00003021
+patch=1,EE,2024F464,extended,00001821
+patch=1,EE,2024F48C,extended,00002021
+patch=1,EE,2024F4B8,extended,00003021
+// half-res exclusions!
+// fix pause menu
+// entrypoint
+patch=1,EE,201AE498,extended,080D0D06
+// detour to divide Y res by 2
+patch=1,EE,20343418,extended,00021043
+patch=1,EE,2034341C,extended,00403821
+patch=1,EE,20343420,extended,0806B928
+patch=1,EE,20343424,extended,00000000
+
+//
+// font stuff
+//
+patch=1,EE,201CF6DC,short,01C0
+patch=1,EE,2017FB94,short,01C0
+patch=1,EE,2017FD08,short,01C0
+
+// halve 3D render res in menus to avoid bugs (Q29gt2k_menu3Car)
+// entrypoint
+patch=1,EE,201C924C,extended,0C0D0AE6
+patch=1,EE,201C9268,extended,0C0D0AE6
+// detour to 0x00342B98
+patch=1,EE,20342B98,extended,03E03821
+patch=1,EE,20342B9C,extended,0C090474
+patch=1,EE,20342BA0,extended,00000000
+patch=1,EE,20342BA4,extended,00E0F821 // MAX RES: 640x320, SAFE RES: 640x224
+patch=1,EE,20342BA8,extended,24030280 // X res
+patch=1,EE,20342BAC,extended,AC830008
+patch=1,EE,20342BB0,extended,24030140 // Y res 
+patch=1,EE,20342BB4,extended,AC83000C
+patch=1,EE,20342BB8,extended,03E00008
+patch=1,EE,20342BBC,extended,00000000
+
+// halve 3D render res for Q29gt2k_menu8CarsItem
+// entrypoint
+patch=1,EE,2013CFB0,extended,0C0D0702
+patch=1,EE,2013CFC8,extended,0C0D0702
+
+// detour to 0x341C08 (copy of 0x241188)
+patch=1,EE,20341C08,extended,27BDFFD0
+patch=1,EE,20341C0C,extended,FFB00000
+patch=1,EE,20341C10,extended,0080802D
+patch=1,EE,20341C14,extended,FFB10010
+patch=1,EE,20341C18,extended,FFBF0020
+patch=1,EE,20341C1C,extended,0C0D0AE6 // jal 0x00342B98
+patch=1,EE,20341C20,extended,00C0882D
+patch=1,EE,20341C24,extended,AE110004
+patch=1,EE,20341C28,extended,0200202D
+patch=1,EE,20341C2C,extended,0C090676
+patch=1,EE,20341C30,extended,AE000028
+patch=1,EE,20341C34,extended,0200102D
+patch=1,EE,20341C38,extended,DFBF0020
+patch=1,EE,20341C3C,extended,DFB10010
+patch=1,EE,20341C40,extended,DFB00000
+patch=1,EE,20341C44,extended,03E00008
+patch=1,EE,20341C48,extended,27BD0030
+
+
+// adjust transforms
+// entrypoint for blur
+patch=1,EE,201CB42C,extended,0C0D0CFC
+// entrypoint for splitscreen
+patch=1,EE,20182ED8,extended,0C0D0CFC
+// entrypoint for cars in menu
+patch=1,EE,201C965C,extended,0C0D0CFC
+// entrypoint for demo replays menu
+patch=1,EE,201CFD6C,extended,0C0D0CFC
+patch=1,EE,201CFDC0,extended,0C0D0CFC
+// entrypoint for playlist config menu
+patch=1,EE,201CFFA0,extended,0C0D0CFC
+patch=1,EE,201CFFE0,extended,0C0D0CFC
+// entrypoint for title screen
+patch=1,EE,201CF9C4,extended,0C0D0CFC
+patch=1,EE,201CFA18,extended,0C0D0CFC
+
+// other entrypoints (comment each pair if something is bugged!)
+patch=1,EE,201CFE98,extended,0C0D0CFC
+patch=1,EE,201CFEE4,extended,0C0D0CFC
+
+patch=1,EE,201CFC3C,extended,0C0D0CFC
+patch=1,EE,201CFC90,extended,0C0D0CFC
+
+patch=1,EE,201CFB08,extended,0C0D0CFC
+patch=1,EE,201CFB58,extended,0C0D0CFC
+
+patch=1,EE,201CF888,extended,0C0D0CFC
+patch=1,EE,201CF8DC,extended,0C0D0CFC
+
+// detour to 0x3433F0
+patch=1,EE,203433F0,extended,03E00008
+patch=1,EE,203433F4,extended,8C82000C
+
+// fix halved viewports
+patch=1,EE,202413B0,extended,02401021
+
+// entrypoints for HUD
+patch=1,EE,20192028,extended,0C0D0CFE
+patch=1,EE,20191FE8,extended,0C0D0CFE
+// detour to 0x3433F8
+patch=1,EE,203433F8,extended,8C820030
+patch=1,EE,203433FC,extended,50400003
+patch=1,EE,20343400,extended,8C82000C
+patch=1,EE,20343404,extended,03E00008
+patch=1,EE,20343408,extended,8C820024
+patch=1,EE,2034340C,extended,03E00008
+patch=1,EE,20343410,extended,00000000
+
+// fix championship trophy screen
+// modify code on the fly to only affect the championship screen and not regular trophy screen
+// this disables multi-pass rendering because it is currently bugged
+
+// entrypoint 1 -- when in championship trophy render, modify trophy render code and set the transform disable flag, then revert changes after function call
+patch=1,EE,20139190,extended,0C0CFD2E
+
+// detour to 0x33F4B8
+patch=1,EE,2033F4B8,extended,27BDFFE0
+patch=1,EE,2033F4BC,extended,FFB60010
+patch=1,EE,2033F4C0,extended,FFBF0000
+patch=1,EE,2033F4C4,extended,24020006
+patch=1,EE,2033F4C8,extended,24030001
+patch=1,EE,2033F4CC,extended,3C160014
+patch=1,EE,2033F4D0,extended,26D68CA0
+patch=1,EE,2033F4D4,extended,A6C20060
+patch=1,EE,2033F4D8,extended,A6C20098
+patch=1,EE,2033F4DC,extended,A6C3FE20
+patch=1,EE,2033F4E0,extended,A2C3016C
+patch=1,EE,2033F4E4,extended,0C04E290
+patch=1,EE,2033F4E8,extended,24050001
+patch=1,EE,2033F4EC,extended,24020005
+patch=1,EE,2033F4F0,extended,24030004
+patch=1,EE,2033F4F4,extended,A6C20060
+patch=1,EE,2033F4F8,extended,A6C20098
+patch=1,EE,2033F4FC,extended,A6C3FE20
+patch=1,EE,2033F500,extended,A2C0016C
+patch=1,EE,2033F504,extended,DFB60010
+patch=1,EE,2033F508,extended,DFBF0000
+patch=1,EE,2033F50C,extended,03E00008
+patch=1,EE,2033F510,extended,27BD0020
+
+// entrypoint 2 -- intercept the transform function and don't execute if the transform disable flag is set
+patch=1,EE,20138C60,extended,0C0CFD45
+
+// detour to 0x33F514
+patch=1,EE,2033F514,extended,3C030014
+patch=1,EE,2033F518,extended,24638E0C
+patch=1,EE,2033F51C,extended,8C620000
+patch=1,EE,2033F520,extended,10400003
+patch=1,EE,2033F524,extended,00000000
+patch=1,EE,2033F528,extended,03E00008
+patch=1,EE,2033F52C,extended,00001021
+patch=1,EE,2033F530,extended,00000000
+patch=1,EE,2033F534,extended,080905BA
+patch=1,EE,2033F538,extended,00000000
